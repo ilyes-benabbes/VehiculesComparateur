@@ -1,0 +1,44 @@
+:root {
+    --primaryColor: #007bff;
+    --fontFamily: 'Arial', sans-serif;
+    --smallPadding : 10px ; 
+    --mediumPadding : 25px ; 
+    --mainFont : "mainFont" , bold  ; 
+    --g1 : 10px ; 
+    --g2 : 20px ; 
+    --g3 : 30px ; 
+}
+
+body {
+    color: var(--primarColor);
+    font-family: var(--mainFont);
+}
+ * {
+    margin: 0;
+    padding: 0px;
+    
+ }
+
+
+ @font-face {
+    font-family: mainFont;
+    src: url(../fonts/Lato-Italic.ttf);
+  }
+
+  div {
+    font-family: var(--mainFont); 
+ }
+
+ a {
+    text-decoration: none;
+    color: black;
+ }
+ a:hover{
+   text-decoration: underline;
+ }
+ .borderBottom{
+    border-bottom: solid 1.1px lightgray;
+ }
+ .border{
+    border: solid 1.1px lightgray;
+ }
