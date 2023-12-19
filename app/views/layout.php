@@ -7,6 +7,7 @@ class Layout
         echo '<link rel="stylesheet" href="./public/css/common.css">';
         echo '<link rel="stylesheet" href="./public/css/index.css">';
         echo '<link rel="stylesheet" href="./public/css/components.css">';
+
         
     }
 

@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="./public/css/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="public/js/index.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="public/js/jquery.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
     <title>Comparateur des véhicules</title>
 </head>
 

@@ -1,15 +1,23 @@
-.row{
+.row , .rowLeft{
     display: flex;  
     align-items: center;
     justify-content: center;
     padding: var(--smallPadding);
 }
+.rowLeft{
+    justify-content: flex-start;
+}
+.rowRight{
+    justify-content: flex-end;
+
+}
 .col {
     display: flex;
     flex-direction: column ;
-    align-items: center;
-    justify-content: center;
+    align-items: stretch;
+    justify-content:stretch;
 }
+
 
 .between {
     justify-content: space-between;
@@ -24,3 +32,22 @@
     gap : var(--g3);
 }
 
+form {
+    max-width: 22vw;
+    padding: 10px;
+    border: solid black 1px;
+    border-radius: 3px;
+
+}
+input , select {
+    border-radius: 3px;
+    border: black 0.8px solid;
+    width: 100%;
+    height: 50px ;
+    
+}
+
+.imageContainer{
+    border-radius: 3px;
+    border: solid lightgray 0.8px;
+}

@@ -1,0 +1,13 @@
+.formsContainer{
+
+    padding: 10px;
+    padding-left: auto;
+    border: solid lightgray 1px;
+}
+
+.addFormBox {
+    align-items: center;
+    justify-content: center;
+    min-width : 22vw ;
+    align-self: stretch;
+}

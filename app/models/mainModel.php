@@ -7,7 +7,7 @@ class mainModel
     private $user = "root";
     private $password = "";
 
-    private function connect($dbname, $host, $user, $password)
+    public function connect($dbname, $host, $user, $password)
     {
 
 
@@ -23,15 +23,17 @@ class mainModel
         return $c;
     }
 
-    private function disconnect(&$c)
+     function disconnect(&$c)
     {
         $c = null;
     }
 
-    private function request($c, $r)
-    {
+     function request($r)
+    {  
+        $c = $this->connect($this->dbname, $this->host, $this->user, $this->password);
         $request = $c->prepare($r);
         $request->execute();
+        $this->disconnect($c);
         return $request->fetchAll(PDO::FETCH_ASSOC);
     }
 }
