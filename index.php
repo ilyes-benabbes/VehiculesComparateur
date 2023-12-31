@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="./public/css/main.css">
+    <link rel="stylesheet" type="" href="./public/css/index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="public/js/index.js"></script>
     <script src="public/js/jquery.js"></script>
@@ -39,12 +39,15 @@
             require_once './app/controllers/logInController.php';
             $controller = new LogInController();
             break;
+        case "buyingGuide":
+            require_once './app/controllers/buyingGuideController.php';
+            $controller = new buyingGuideController();
+            break;
         default:
             require_once("./app/controllers/error.php");
             $controller = new ErrorPage();
     }
 
-    
     $controller->showPage();
     ?>
 

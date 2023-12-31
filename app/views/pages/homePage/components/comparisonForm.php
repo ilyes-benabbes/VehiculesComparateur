@@ -1,11 +1,13 @@
 <?php
-require_once ("app/views/components/form.php");
-require_once ("app/views/components/select.php");
-require_once ("app/views/components/imageContainer.php");
+require_once __DIR__ . '/../../../components/form.php' ;
+require_once __DIR__ . '/../../../components/select.php' ;
+require_once __DIR__ . '/../../../components/imageContainer.php' ;
+
+
 class ComparisonForm extends Form{
     
      function renderComparisonForm(  $formeId , $controller ){
-         echo "<form>";
+         echo "<form class='comparisonForm'>";
          $img = new ImageContainer();
          $img->render("public/images/commonPictures/defaultCar.svg" , "200px" , "defaultCar") ;
          $formId="homeComparison"; 
@@ -14,9 +16,9 @@ class ComparisonForm extends Form{
          $selectBrand = new Select();
          $selectModel = new Select();
          $brandsList = $controller->getBrands();
-        //  $modelsList = $controller->getModels($brand);
-         $selectBrand->render("Brands" ,$brandsList);
-         echo '<button class="button"> click me </button>';
+         $selectBrand->render("Brand" , "SelectBrand" ,$brandsList);
+        //  $selectModel->renderDisabled("Model");
+        //  echo '<button class="button"> click me </button>';
 
 
          // foe each brand , generate models , for each model , generate its years kamel

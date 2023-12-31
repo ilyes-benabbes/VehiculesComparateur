@@ -1,5 +1,5 @@
 <?php
-require_once ("app/views/components/inputBox.php"); 
+require_once  __DIR__ . '/../components/inputBox.php'; 
 class Form {
     // the fields is a list like this [[label , type]] : [["email", "text"], ["age,"number"] , ["sexe" , "Select"]];
     function render($fields , $formId){

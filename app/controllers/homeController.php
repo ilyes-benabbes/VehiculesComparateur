@@ -1,90 +1,97 @@
 <?php
 require_once __DIR__ . '/../views/pages/homePage/homePage.php';
-require_once  __DIR__ . '/../controllers/mainController.php';
-require_once  __DIR__ . '/../views/layout.php';
-require_once  __DIR__ . '/../models/vehiculesModel.php';
+require_once __DIR__ . '/../controllers/mainController.php';
+require_once __DIR__ . '/../views/layout.php';
+require_once __DIR__ . '/../models/vehiculesModel.php';
 
 class HomeController extends MainController
 {
-    private static $instance;
-    protected $homePage ; 
+    protected $homePage;
+    public $name = "home";
 
-       // Public static method to provide access to the instance
-       public static function getInstance() {
-        if (self::$instance === null) {
-            // If the instance is null, create a new one
-            self::$instance = new self();
+    function getRows($res)
+    {
+        foreach ($res as $row) {
         }
-        return self::$instance;
     }
 
+    function showResult($res)
+    {
+        echo '<pre>';
+        print_r($res);
+        echo '</pre>';
+    }
 
-function getRows($res){
-    foreach ($res as $row) {
-}}
-
-
-
-
-function showResult($res){
-    echo '<pre>';
-    print_r($res);
-    echo '</pre>';
-
-}
+   
 
     function showPage()
     {
-        $this->homePage = new HomePage(HomeController::getInstance());
+        $this->homePage = new HomePage($this);
         $layout = new Layout();
         $layout->showPage($this->homePage);
     }
-
 
     function getBrands()
     {
         $model = new VehiculesModel();
         $res = $model->getBrands();
 
-        foreach ($res as $row){
-            $path =  $row["imagePath"];
-        }
-       ;
-        return $res ;     
+        return $res;
     }
-}
+ 
+
+    function getNextSelect($payload , $selectType){
+        // ? if i move this to a separate file called api.php , 
+        // ? if another file want same info it can do that by calling the api.php file 
+        // in the api file , i must instanciate the view , and model , and that's it i think 
+        // 
+        $homepage = new HomePage($this);
+        $model = new VehiculesModel();
+        switch ($selectType) {
+            case 'SelectBrand':
+                $carModels = $model->getModelsOfBrandById($payload[$selectType]);
+                $homepage->renderNextSelect("Model" , "SelectModel" , $carModels );
+
+              
+                break;
+            case 'SelectModel':
+                $versions = $model->getVersionsByVehicleId($payload["SelectModel"]);
+                $homepage->renderNextSelect("Version" , "SelectVersion" , $versions );
+                break;
 
 
-
-
-
-
-
-
-
-
-
-echo "wtfabove";
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo "wtfunder";
-    if (isset($_POST['action'])) {
-        $action = $_POST['action'];
-
-        echo "the action is " ; 
-        echo $action ;
-        
-        switch ($action) {
-
-            case 'addForm':
-                // $this->homePage->renderAddFormBox();
-                echo "hello there "; 
+                case 'SelectVersion':
+                    $years = $model->getYearsByVersion_VehicleId( $payload["SelectModel"], $payload["SelectVersion"]);
+                    $homepage->renderNextSelect("Year" , "SelectYear" , $years);
+              
+              
+                break;
+            
+            case 'SelectYear':
                 
                 break;
-
-
-            default:
-                // Handle unknown action
-                break;
         }
+
     }
+
+    function addForm()
+    {
+        $homePage = new HomePage($this);
+        $homePage->renderForm();
+    }
+
+    function getMostPopularComparisons($nbr){
+        $model = new VehiculesModel();
+        $res = $model->getMostPopularComparisons($nbr);
+        return $res;
+    }
+
+    function getVehiculesByComparisonId($id){
+        $model = new VehiculesModel();
+        $res = $model->getVehiculesByComparisonId($id);
+
+        return $res;
+    }
+
+
 }

@@ -1,5 +1,6 @@
 <?php
-require_once("./app/controllers/mainController.php");
+require_once __DIR__ . "/../controllers/mainController.php";
+
 
 class MainView {
     protected $controller; 

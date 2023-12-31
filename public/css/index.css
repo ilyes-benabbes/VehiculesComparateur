@@ -19,26 +19,3 @@ body {
     
  }
 
-
- @font-face {
-    font-family: mainFont;
-    src: url(../fonts/Lato-Italic.ttf);
-  }
-
-  div {
-    font-family: var(--mainFont); 
- }
-
- a {
-    text-decoration: none;
-    color: black;
- }
- a:hover{
-   text-decoration: underline;
- }
- .borderBottom{
-    border-bottom: solid 1.1px lightgray;
- }
- .border{
-    border: solid 1.1px lightgray;
- }

@@ -1,4 +1,41 @@
-.row , .rowLeft{
+
+@font-face {
+    font-family: mainFont;
+    src: url(../fonts/Lato-Italic.ttf);
+  }
+
+  div {
+    font-family: var(--mainFont); 
+ }
+
+ a {
+    text-decoration: none;
+    color: black;
+ }
+ a:hover{
+   text-decoration: underline;
+ }
+ .borderBottom{
+    border-bottom: solid 1.1px lightgray;
+ }
+ .border{
+    border: solid 1.1px lightgray;
+ }
+
+ .headFont{
+   font-size: 2rem;
+   font-weight: bold;
+ }
+
+ .limitParagraph{
+   text-overflow:ellipsis;
+   -webkit-line-clamp: 3; 
+   max-width: 40%;   
+ 
+ }
+
+
+.row , .rowLeft , .rowRight{
     display: flex;  
     align-items: center;
     justify-content: center;
@@ -22,6 +59,10 @@
 .between {
     justify-content: space-between;
 }
+
+.around {
+    justify-content: space-around;
+}
 .g1{
     gap : var(--g1);
 }
@@ -37,6 +78,7 @@ form {
     padding: 10px;
     border: solid black 1px;
     border-radius: 3px;
+    min-width: 21.2rem;
 
 }
 input , select {
@@ -50,4 +92,27 @@ input , select {
 .imageContainer{
     border-radius: 3px;
     border: solid lightgray 0.8px;
+}
+
+button {
+    border-radius: 3px;
+    border: black 0.8px solid;
+    background-color: white;
+    cursor: pointer;
+    padding: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: black;
+}
+.primaryColor {
+    background-color: var(--primaryColor);
+    color : white
+}
+
+
+.margin1{
+    margin: var(--g1);
+}
+.margin2{
+    margin: var(--g3) ;
 }

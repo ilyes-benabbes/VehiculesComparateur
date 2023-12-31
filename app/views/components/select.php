@@ -1,12 +1,19 @@
 <?php
 class Select {
-    function render($label, $optionsList,  $valueKey = 'id', $textKey = 'name') {
+    function render($label, $className, $optionsList,  $valueKey = 'id', $textKey = 'name') {
         echo '<div class="col"  >' ;
         $input = '<label for="' . strtolower($label) . '">' . $label . '</label>';
-        $input .= '<select class="' .$label . '" name="' . strtolower($label) . '">';
+        $input .= '<select class="' .$className . '" name="' . strtolower($label) . '">';
+    
+        $input .= '<option value="" disabled selected>    ------------------</option>';
+
 
         foreach ($optionsList as $option) {
-            $value = $option[$valueKey];
+            if (   isset($option[$valueKey]) ){
+                $value = $option[$valueKey];
+            }else {
+                $value = "";
+            }
             $text = $option[$textKey];
             $input .= '<option value="' . htmlspecialchars($value) . '">' . htmlspecialchars($text) . '</option>';
         }
@@ -15,6 +22,14 @@ class Select {
         echo $input;
         echo "</div>";
     }
+
+    function renderDisabled($label){
+        
+        $input = '<label for="' . strtolower($label) . '">' . $label . '</label>';
+        $input .= '<select class="' .$label . '" name="' . strtolower($label) . ' " disabled>';
+        $input .= '</select>';
+        echo $input ;
+
+    }
 }
 
-// E

@@ -28,10 +28,15 @@ class mainModel
         $c = null;
     }
 
-     function request($r)
+     function request($r , $bindParams = null)
     {  
         $c = $this->connect($this->dbname, $this->host, $this->user, $this->password);
         $request = $c->prepare($r);
+        if ($bindParams) {
+            foreach ($bindParams as $key => $value) {
+                $request->bindValue($key + 1, $value);
+            }
+        }
         $request->execute();
         $this->disconnect($c);
         return $request->fetchAll(PDO::FETCH_ASSOC);
