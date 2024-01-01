@@ -61,7 +61,6 @@ class VehiculesModel extends mainModel
    }
 
    function getFullVehiculesInfos($queryResults){
-  
     $res = [];
     foreach ($queryResults as $vehicule){
         $id = $vehicule["vehicle_id"];
@@ -70,11 +69,39 @@ class VehiculesModel extends mainModel
         
     }
 
-
-
+    
+    
     return $res ;
-   }
+}
 
+function getVehicleById($id){
+    // $query = "SELECT * FROM vehicle WHERE id = ?";
+    $query = "SELECT vehicle.* ,  brand.name as brand , version.name as version  from (( vehicle join brand on (brand.id = vehicle.brand_id)) join version on (version.id = vehicle.version_id))  where  (vehicle.id = $id ) ";
+
+    return $this->request($query); 
+}
+
+function getColorsByVehicleId($id){
+    $query = "SELECT color.name FROM color JOIN vehiclecolorlink ON (color.id = vehiclecolorlink.color_id) WHERE vehicle_id = ?";
+    return $this->request($query , [$id]);  
+}
+
+function getPopularCarsByBrandId($id , $nbrOfCarsToShow){
+   
+    $request = "SELECT
+    vehicle.id as id , 
+    COUNT(favorite.id) AS favorite_count
+FROM
+    vehicle
+LEFT JOIN
+    favorite ON vehicle.id = favorite.vehicle_id
+GROUP BY
+    vehicle.id
+ORDER BY
+    favorite_count DESC LIMIT $nbrOfCarsToShow;
+";
+    return $this->request( $request);
+} // end of func
 
    function showResult($res)
    {

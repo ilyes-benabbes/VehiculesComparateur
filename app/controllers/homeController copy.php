@@ -26,7 +26,7 @@ class HomeController extends MainController
 
     function showPage()
     {
-        $this->homePage = new HomePage($this);
+        $this->homePage = new HomePage();
         $layout = new Layout();
         $layout->showPage($this->homePage);
     }
@@ -39,12 +39,9 @@ class HomeController extends MainController
         return $res;
     }
  
-
+// to be deleted from here and moved into the vehicleController 
     function getNextSelect($payload , $selectType){
-        // ? if i move this to a separate file called api.php , 
-        // ? if another file want same info it can do that by calling the api.php file 
-        // in the api file , i must instanciate the view , and model , and that's it i think 
-        // 
+ 
         $homepage = new HomePage($this);
         $model = new VehiculesModel();
         switch ($selectType) {
@@ -73,7 +70,7 @@ class HomeController extends MainController
         }
 
     }
-
+// to be deleted from here and moved into the vehicleController
     function addForm()
     {
         $homePage = new HomePage($this);
@@ -89,7 +86,6 @@ class HomeController extends MainController
     function getVehiculesByComparisonId($id){
         $model = new VehiculesModel();
         $res = $model->getVehiculesByComparisonId($id);
-
         return $res;
     }
 

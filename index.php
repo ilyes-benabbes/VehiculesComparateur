@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="public/js/index.js"></script>
     <script src="public/js/jquery.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
+    <script src="public/js/components.js"></script>
     <title>Comparateur des véhicules</title>
 </head>
 
@@ -16,39 +16,56 @@
     <?php
 
     $url = isset($_GET['url']) ? $_GET['url'] : '/';
-    // echo $url;
+    require_once './app/controllers/viewsController.php';
+    require_once __DIR__ . '/app/controllers/vehiclesController.php';
+    require_once __DIR__ . '/app/controllers/brandsController.php';
+    require_once __DIR__ . '/app/models/brandsModel.php';
+
+    $controller = new ViewsController();
+    $layout = null; 
 
     switch ($url) {
         case "/":
-            require_once './app/controllers/homeController.php';
-            $controller = new HomeController();
+            require_once './app/views/pages/homePage/homePage.php';
+            $view = new HomePage();
+            $layout = new Layout();
             break;
+
+            case "comparator": 
+            require_once './app/views/pages/comparatorPage/comparatorPage.php';
+            require_once './app/views/helperView.php';
+            $view = new ComparatorPage();
+            $layout = new Layout();
+            break;
+
+
         case "brands":
-            require_once './app/controllers/brandsController.php';
-            $controller = new BrandsController();
+            require_once './app/views/pages/brandsPage/brandsPage.php';
+            $layout = new Layout();
+            $view = new BrandsPage();
             break;
         case "news":
             require_once './app/controllers/newsController.php';
-            $controller = new NewsController();
+            $view = new NewsController();
             break;
         case "signUp":
             require_once './app/controllers/signUpController.php';
-            $controller = new SignUpController();
+            $view = new SignUpController();
             break;
         case "logIn":
             require_once './app/controllers/logInController.php';
-            $controller = new LogInController();
+            $view = new LogInController();
             break;
         case "buyingGuide":
             require_once './app/controllers/buyingGuideController.php';
-            $controller = new buyingGuideController();
+            $view = new buyingGuideController();
             break;
         default:
-            require_once("./app/controllers/error.php");
-            $controller = new ErrorPage();
+            require_once("./app/views/error.php");
+            $view = new ErrorPage();
     }
 
-    $controller->showPage();
+    $controller->showPage($view, $layout);
     ?>
 
 </body>

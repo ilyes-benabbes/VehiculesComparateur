@@ -5,3 +5,8 @@
 [4]: disable arrows when sliding 
 [5]: disable sliding with mouse on comparisons 
 [6]: increment the search count after each clicking of the comparisons. 
+[7]: add the button to compare another one , what does this do : it just reshow the comparisonForm
+        but after making it empty and delete table .
+[8]: le click sur une image du voiture takes you to vehicles Car 
+[9]: make a page one called brands , depending on the id of brand showsData 
+[10] : MAKE A PAGE CALLED CARS , DEPENDING ON THE ID OF THE CAR 

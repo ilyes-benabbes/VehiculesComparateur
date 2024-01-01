@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__."/../../../../controllers/homeController.php";
+require_once __DIR__."/../../../../controllers/vehiclesController.php";
 class ComparisonCard {
 
     function render($arrayOfVs){
