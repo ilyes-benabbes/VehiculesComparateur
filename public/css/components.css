@@ -34,21 +34,28 @@
  
  }
 
+.frow{
+    gap : 10px ;
+}
+.relative{
+    position: relative;
+}
 
-.row , .rowLeft , .rowRight{
-    display: flex;  
-    align-items: center;
-    justify-content: center;
-    padding: var(--smallPadding);
+.row , .rowLeft , .rowRight , .frow{
+    /* border : solid red 0.5px; */
+    display: flex  !important ;
+    align-items: center !important ;
+    justify-content: center !important ;
+    padding: var(--smallPadding) !important ;
 }
 .rowLeft{
-    justify-content: flex-start;
+    justify-content: flex-start !important;
 }
 .rowRight{
     justify-content: flex-end;
 
 }
-.col {
+.col , .fcol {
     display: flex;
     flex-direction: column ;
     align-items: stretch;
@@ -89,19 +96,28 @@ input , select {
     
 }
 
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    border-radius: 0px;
+    background-color: white;
+    cursor: pointer;
+}
+
 .imageContainer{
     border-radius: 3px;
     border: solid lightgray 0.8px;
 }
 
 button {
-    border-radius: 3px;
-    border: black 0.8px solid;
+    border-radius: 2px;
     background-color: white;
     cursor: pointer;
-    padding: 20px;
+    padding: 4px;
     font-size: 1.2rem;
-    font-weight: bold;
     color: black;
 }
 button:disabled{
@@ -299,4 +315,63 @@ button:disabled{
     align-items: stretch;
     border-top : black solid 0.5px;
     border-bottom : black solid 0.5px;
+}
+
+/* .carCard{
+    max-width: 300px;
+    max-height: 300px;
+    border: #1e90ff solid 1px;
+} */
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.fit{
+    padding: 20px;
+    max-width: fit-content;
+    max-height: fit-content;
+}
+
+.topNotificationError{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: red;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    z-index: 100;
+}
+
+
+.favouriteCard{
+    position: relative;
+    max-width: 300px;
+    max-height: 300px;
+}
+.delete{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    right: 0;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #e75231;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
 }

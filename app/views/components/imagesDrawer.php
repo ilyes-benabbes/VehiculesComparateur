@@ -16,7 +16,8 @@ class imagesDrawer
        
 
             echo '<div class ="border" ">';
-            echo '<img class="brandImage" src="' . $imagesListWithIds[$i]["imagePath"] . '" width="' . $size . '" alt=""  id=" '.$imagesListWithIds[$i]["id"] .'"> ';
+            echo '<img class="brandImage" src="'.$imagesListWithIds[$i]["imagePath"]
+            .'" width="' . $size . '" alt=""  id=" '.$imagesListWithIds[$i]["id"] .'"> ';
             // echo '<img'.'brandId="'.$imagesListWithIds[$i].id .'" src="' .$imagesListWithIds[$i] .'" width="'.$size.'" alt=""> ' ;
             echo "</div>";
         }

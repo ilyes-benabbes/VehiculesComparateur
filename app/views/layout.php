@@ -5,14 +5,14 @@ class Layout
     {
         require_once "config.php";
         echo '<link rel="stylesheet" href="./public/css/common.css">';
-        echo '<link rel="stylesheet" href="./public/css/components.css">';
+        echo '<link rel="stylesheet" href="./public/css/componendsts.css">';
 
         
     }
 
     function showHeader()
     {
-        include 'app/views/components/header.php';
+        include __DIR__.'/../../app/views/components/header.php';
     }
 
     function showFooter()

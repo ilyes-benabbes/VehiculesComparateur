@@ -1,5 +1,10 @@
 <?php
-class carCard{
+
+
+
+
+
+class  carCard {
     function render($data){
         echo "<div class='carCard col border'>";
         echo "<div class='carCardImageContainer' id={$data['id']}>";
@@ -12,10 +17,10 @@ class carCard{
         echo "<p>{$data['engine_power']}<p/>";
         echo "<p>{$data['type']}</p>";
         echo "<p>{$data['price']}</p>";
+        echo "<button id='{$data['id']}' > View Details </button>";
         echo "</div>";
         // 
         echo "</div>";
-        echo "<button id='{$data['id']}' > View </button>";
     
         echo "</div>";
     }

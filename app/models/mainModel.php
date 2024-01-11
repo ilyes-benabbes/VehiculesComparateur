@@ -41,4 +41,21 @@ class mainModel
         $this->disconnect($c);
         return $request->fetchAll(PDO::FETCH_ASSOC);
     }
+    function requestWithoutDisconnect($r , $bindParams = null)
+    {  
+        $c = $this->connect($this->dbname, $this->host, $this->user, $this->password);
+        $request = $c->prepare($r);
+        if ($bindParams) {
+            foreach ($bindParams as $key => $value) {
+                $request->bindValue($key + 1, $value);
+            }
+        }
+        $request->execute();
+        $id = $c->lastInsertId();
+     
+        $request->fetchAll(PDO::FETCH_ASSOC);
+        return $id;
+    }
+
+
 }

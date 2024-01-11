@@ -6,6 +6,7 @@ class ViewsController {
         if($layout){
             $layout->showPage($page);
         }else{
+        
             $page->show();
         }
     }

@@ -1,12 +1,17 @@
 
 [1]: make the button of comparison clickable only if at least two forms are fully filled with different cars each time .
 [2]: make the footer
-[3]: when it selects the year at the end change the image of the car in the comparison form
-[4]: disable arrows when sliding 
-[5]: disable sliding with mouse on comparisons 
+[3]: when it selects the year at the end change the image of the car in the comparison form.
+[4]: disable arrows when sliding. 
+[5]: disable sliding with mouse on comparisons. 
 [6]: increment the search count after each clicking of the comparisons. 
 [7]: add the button to compare another one , what does this do : it just reshow the comparisonForm
-        but after making it empty and delete table .
-[8]: le click sur une image du voiture takes you to vehicles Car 
-[9]: make a page one called brands , depending on the id of brand showsData 
+        but after making it empty and delete table.
+[8]: le click sur une image du voiture takes you to vehicles Car. 
+[9]: make a page one called brands , depending on the id of brand showsData. 
+[11]: add jQuery to brands page , modify the review to make it review+FeedBack.
 [10] : MAKE A PAGE CALLED CARS , DEPENDING ON THE ID OF THE CAR 
+[12] : make the review like put a rating plus comment like i google play.
+[13] : add pagination to brand reviews , to show them just under what already exists , easy .
+[14] : add the addition of a like for a review and change that 
+[15] : fix the fake path to add imaages in the brand addition and behicle addition 

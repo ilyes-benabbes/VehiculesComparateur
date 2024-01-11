@@ -1,27 +1,30 @@
 <?php
 require_once __DIR__."/../../../../controllers/vehiclesController.php";
+require_once __DIR__."/../../../components/carCard.php";
 class ComparisonCard {
 
     function render($arrayOfVs){
-        echo  '<div class= "comparisonCard row border">';
-
+        echo  '<div class= "comparisonCard col border">';
+        echo "<div class='row border'>";
         foreach ($arrayOfVs as $v){
-            $vehiculeContainer = "<div class='col comparedVehicle'>";
-            $vehiculeContainer .= '<img src="'.$v["image"].'" alt="car" srcset=""></img>';
-            $vehiculeContainer .= '<h2> Brand </h2>';
-            $vehiculeContainer .= '<p> ' . $v["brand"] . ' </p>';
-            $vehiculeContainer .= '<h2> Model </h2>';
-            $vehiculeContainer .= '<p> ' . $v["name"] . ' </p>';
-            $vehiculeContainer .= '<h2> Version </h2>';
-            $vehiculeContainer .= '<p> ' . $v["version"] . ' </p>';
-            $vehiculeContainer .= '<h2> Year </h2>';
-            $vehiculeContainer .= '<p> ' . $v["year"] . ' </p>';
-            $vehiculeContainer .= "</div>";
+            $card =  new carCard();
+            $card->render($v);
+
+            echo "<div class='col border'>";
+
+            if($v != end($arrayOfVs)){
+                echo "<h1>VS</h1>";
+            }
+            
+            echo "</div>";
+        }
+        echo "</div>";
+
+        // echo "<button class='compareButton'>Compare</button>";
         
-            echo $vehiculeContainer;
-    }
-    echo "</div>";
-    }
+            // echo $vehiculeContainer;
+        echo "</div>";
+}
 
 
         

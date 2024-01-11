@@ -1,0 +1,36 @@
+<?php
+require_once  __DIR__ . '/../models/mainModel.php';
+
+class UsersModel extends mainModel {
+        function createUser($firstName  , $lastName , $birthDate , $gender , $password , $email ){
+            if ($gender == 0){
+                $genderName = "Female";
+            }else {
+                $genderName = "Male" ;
+            }
+            $query = "INSERT INTO `user`(  `first_name` , `last_name` , `birth_date` , `gender`  , `password` , `email` ) VALUES (? , ? , ? , ?,? , ? )";
+            return $this->request($query  , [ $firstName , $lastName , $birthDate , $genderName , $password , $email]);
+        }
+        function logIn($email , $pass){
+                
+                $query = "SELECT * FROM `user` WHERE `email` = ? AND `password` = ? ";
+                $res =  $this->request($query , [$email , $pass]);
+                if (count($res) > 0){
+                    $cookie_name = "logedIn_user";
+                    // $cookie_value = ["firstName" => $_POST['firstName'], "lastName" => $_POST['lasteName'], "role" => $_POST['role'], "id" => $db->lastInsertId(), "email" => $_POST['email']];
+                    $cookie_value = $res[0]['id'];
+                    setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+                    // returning the id 
+                    return $res[0];}
+                    else {
+                        return false;
+                    }
+
+
+
+        }
+        function addCarReview($review , $carId , $rating , $userId){
+            $query = "INSERT INTO `vehiclereview`(`text` , `vehicle_id` , `rating` , `user_id`) VALUES (? , ? , ? , ?)";
+            $this->request($query , [$review , $carId , $rating , $userId]);
+        }
+}

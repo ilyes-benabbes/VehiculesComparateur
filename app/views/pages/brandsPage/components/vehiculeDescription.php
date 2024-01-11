@@ -1,1 +1,0 @@
-<!-- celle-ci est pour les details d'une vehicules -->

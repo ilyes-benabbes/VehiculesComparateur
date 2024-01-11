@@ -1,7 +1,8 @@
 <?php
-require __DIR__ ."/../../components/carCard.php";
-require __DIR__ ."/../../components/reviewCard.php";
-require __DIR__ ."/../../components/brandSection.php";
+require_once __DIR__ ."/../../components/carCard.php";
+require_once __DIR__ ."/../../components/reviewCard.php";
+require_once __DIR__ ."/../../components/brandSection.php";
+require_once __DIR__ ."/../../pages/vehiclePages/vehicleDesciptionPage.php";
 class BrandsPage{
      function configure(){
         echo '<link rel="stylesheet" href="./public/css/brands.css">';
@@ -9,14 +10,20 @@ class BrandsPage{
      }
         function show(){
             $this->configure();
-            // ! option A : either i do a default brand to show , with its data and all
-            // ! option B : or i just show the images drawer and after the click i show the data just under.
+           
             $menu = new Menu();
             $menu->render();
-            $this->showBrandsDrawer();
+            // $this->showBrandsDrawer();
             // $this->showBrandDataById(3);
             // $this->showPopularCarsSection(3);  
-            $this->showReviewSection(2);
+            // $this->showReviewSection(2);
+
+
+
+            //todo testing the page of vehicles 
+            $vehiclePage = new VehicleDescriptionPage();
+            $vehiclePage->show(4);
+            echo "********************";
         }
         function showResult($res)
         {
@@ -61,9 +68,10 @@ class BrandsPage{
             foreach($reviewList as $review){
                 // the review must contain the user name , the review , the rating , the date of the review
                 $reviewCard = new ReviewCard();
+                // $reviewCard->render($review);
                 $reviewCard->render($review);
             }
-            echo "<button class='showMoreReviewsButton'>Show More Reviews</button>";
+            echo "<button class='showMoreBrandReviewsButton' id={$id}>Show More Reviews</button>";
             echo "</div>";
         }}
 
@@ -136,11 +144,12 @@ class BrandsPage{
         //? 6- show the main cars of the brand , by calling the controller to give me the main cars of the brand
         //? 7- show a dropDown List of all resting cars .
 //todo:the section idea:make three cars at left "OR" pick a car((in a dropDown list))on right side of the section 
-        //? 9- show the Reviews sections (show3PuplarViewsForBrand($id))
+        //? 9- show the Reviews sections (show3popularViewsForBrand($id))
         //? 10- show the reviewSection to add a review(this componenets on click of send get the review and the userId 
         //? and the brandId )
         //? most popular cars setion must calculate the rating of all cars and give the most 3 popular cars.
         // ?  before sending check if the userIsLoggedIn , using a cookie or i don't know ;
+        
         // review.ocClick(function(){
         //     if(userIsLoggedIn){
             // reviewComponenetaddAType("reviewType");

@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../mainView.php';
 require_once __DIR__ . '/../../components/select.php';
 require_once __DIR__ . '/../../components/menu.php';
 require_once __DIR__ . '/../../components/comparisonForm.php';
-include __DIR__ . "/components/comparisonCard.php";
+require_once __DIR__ . "/components/comparisonCard.php";
 
 
 
