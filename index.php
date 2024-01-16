@@ -7,6 +7,11 @@
 
     <link rel="stylesheet" type="" href="/VehiculesComparateur%20(ProjetWeb)/public/css/components.css">
     <link rel="stylesheet" type="" href="/VehiculesComparateur%20(ProjetWeb)/public/css/index.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"> -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
     <script defer src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script defer src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
     <script src="public/js/index.js"></script>
@@ -17,10 +22,11 @@
 </head>
 
 <body>
-
     <?php
     $url = isset($_GET['url']) ? $_GET['url'] : '/';
     $uriComponents = explode('/', $url);
+            require_once __DIR__ . "/config.php";
+
     require_once './app/controllers/viewsController.php';
     require_once __DIR__ . '/app/controllers/vehiclesController.php';
     require_once __DIR__ . '/app/controllers/brandsController.php';
@@ -40,19 +46,66 @@
             $view = new HomePage();
             $layout = new Layout();
             break;
+        case "contact":
+            require_once './app/views/pages/contactPage/contactPage.php';
+            $view = new ContactPage();
+            $layout = new Layout();
+            break;
 
         case "comparator":
-            require_once './app/views/pages/comparatorPage/comparatorPage.php';
-            require_once './app/views/helperView.php';
-            $view = new ComparatorPage();
-            $layout = new Layout();
+            $comparisonId = $uriComponents[1] ?? null;
+            if ($comparisonId !== null && is_numeric($comparisonId)) {
+                require_once './app/views/pages/comparatorPage/comparatorPage.php';
+                $layout = new Layout();
+                 $view = new ComparatorPage($comparisonId);
+
+                break; }
+                else {
+
+                require_once './app/views/pages/comparatorPage/comparatorPage.php';
+                $view = new ComparatorPage();
+                $layout = new Layout();
             break;
+                }
+
+
+
+
+
+
 
         case "brands":
-            require_once './app/views/pages/brandsPage/brandsPage.php';
-            $layout = new Layout();
-            $view = new BrandsPage();
-            break;
+            $brandId = $uriComponents[1] ?? null;
+            echo $brandId;
+            if ($brandId !== null && is_numeric($brandId)) {
+                require_once './app/views/pages/brandsPage/brandDetails.php';
+                $layout = new Layout();
+                $view = new BrandDetailsPage($brandId);
+                break;  
+                
+            } else {
+                require_once './app/views/pages/brandsPage/brandsPage.php';
+                $layout = new Layout();
+                $view = new BrandsPage();
+                break;
+            }
+        case "vehiculs":
+            $carId = $uriComponents[1] ?? null;
+
+            if ($carId !== null && is_numeric($carId)) {
+                require_once './app/views/pages/vehiclePages/vehicleDesciptionPage.php';
+                $layout = new Layout();
+                $view = new VehicleDescriptionPage($carId);
+                break;  
+                
+            } else {
+                require_once './app/views/error.php';
+                $layout = new Layout();
+                $view = new ErrorPage();
+                break;
+            }
+
+         
 
             case "news":
             $layout = new Layout();

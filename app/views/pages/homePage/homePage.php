@@ -1,5 +1,4 @@
 <?php
-require_once "C:\wamp64\www\VehiculesComparateur (ProjetWeb)\config.php";
 require_once __DIR__ . '/../../components/imagesDrawer.php';
 require_once __DIR__ . '/../../components/form.php';
 require_once __DIR__ . '/../../mainView.php';
@@ -62,7 +61,7 @@ class HomePage extends MainView
     
     }
 
-    function showSecondZone()
+    function    showSecondZone()
     {
         $helperView = new HelperView();
         $helperView->renderComparisonFormsSection(); 
@@ -83,8 +82,8 @@ class HomePage extends MainView
         $this->configure();
         //! do not delete this 
         // $this->showDiaporama();
-        $menu = new Menu();
-        $menu->render();
+        // $menu = new Menu();
+        // $menu->render();
         $this->showFirstZone();
         $this->showSecondZone();
         $this->showThirdZone();
@@ -107,7 +106,7 @@ function showMostPopularComparisons(){
             foreach ($arrayOfcomparisons as $comparison){
                 $arrofVs = $ctrl->getVehiculesByComparisonId($comparison["id"]);
                 $card = new ComparisonCard();
-                $card->render($arrofVs);
+                $card->render($arrofVs , $comparison["id"] );
             }
             echo "</div>";
              echo ' </div>';

@@ -4,6 +4,23 @@ require_once __DIR__."/../models/brandsModel.php";
 
 class BrandsController   extends MainController{
 
+
+    function hasReviewedThisBrand($userId , $brandId){
+        $model = new BrandsModel();
+        $res = $model->hasReviewedThisBrand($userId , $brandId);
+        return $res;
+    }
+
+    function getUserReactionsToReviewsByBrandId($userId , $brandId){
+        $model = new BrandsModel();
+        $res = $model->getUserReactionsToReviewsByBrandId($userId, $brandId);
+        return $res;
+    }
+
+
+
+
+
     function deleteBrand($id){
         $model = new BrandsModel();
         $model->deleteBrand($id);
@@ -26,7 +43,6 @@ class BrandsController   extends MainController{
         $model->updateBrandById($id , $data);
     }
     public function addBrand($data){
-        $this->showResult($data);
         $model = new BrandsModel();
         $brandId = $model->addBrand($data["name"] , $data["origin"] , $data["yearOfCreation"] , $data["founder"] , $data["ceo"] , $data["headQuarters"] , $data["worth"] , $data["description"] , $data["slogan"] , $data["imagePath"] , $data["videoPath"]);
         $this->addfacts($brandId , $data["facts"]);
@@ -76,6 +92,8 @@ class BrandsController   extends MainController{
     }
     return $popCars;
    }
+
+
    function getBrandById($id){
        $model= new BrandsModel();
 
@@ -94,11 +112,7 @@ class BrandsController   extends MainController{
     foreach($awards as $key=>$award){
         $fullBrandData["awards"][] = $award["awardName"];
     }
-    // $fullBrandData["rating"] = $model->getBrandRatingById($id)["rating"];
-
-    // echo " this is the first brand after all change "; 
-    //    $this->showResult($fullBrandData);
-
+    $fullBrandData["rating"] = $model->getBrandRatingById($id)[0]["rating"];
     return $fullBrandData ;
    }
 

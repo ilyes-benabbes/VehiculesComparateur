@@ -7,6 +7,21 @@ require_once __DIR__ . '/../models/vehiculesModel.php';
 
 class VehiclesController extends MainController
 {
+
+    function getUserReactionsToReviewsByCarId( $userId){
+        $model = new VehiculesModel();
+        $res = $model->getUserReactionsToReviewsByCarId($userId);
+        return $res;
+    }
+
+    function hasReviewedThisCar($userId , $carId){
+        $model = new VehiculesModel();
+        $res = $model->hasReviewedThisCar($userId , $carId);
+        return $res;
+
+    }
+
+
     function editCar($id , $data){
         $model = new VehiculesModel();
         $model->editCar($id , $data);
@@ -234,6 +249,53 @@ function addFeature($data){
 
 
     }
+
+    function compareByComparisonId($id){
+        $model = new VehiculesModel();
+        $view = new HelperView();
+        $tableRows = []; 
+
+        $arrayOfVehiclesIds = $model->getVehiculesByComparisonId($id);
+        
+        foreach ($arrayOfVehiclesIds as $id) {
+            
+            $vehicle = $id;
+            $res = $model->getColorsByVehicleId($vehicle['id']); 
+            $availableColors = [];
+                // this to extract the colors from the array of arrays
+            foreach ($res as $colorArray) {
+                $availableColors[] = $colorArray["name"];
+            }
+
+            $availableColors = $this->stringify($availableColors);
+
+            
+            
+            
+            // $vehicle = $vehicle[0];
+            // add later in dataBase , fields like AvailableColors , fuelTypes , 
+            $tableRows['image'][] = $vehicle['image'];
+            $tableRows['brand'][] = $vehicle['brand'];
+            $tableRows['model'][] = $vehicle['name'];
+            $tableRows['version'][] = $vehicle['version'];
+            $tableRows['price'][] = $vehicle['price'];
+            $tableRows['number of seats'][]= $vehicle['number_of_seats']; 
+            $tableRows['capacity'][] = $vehicle['capacity'];
+            $tableRows['consumption'][] = $vehicle['consumption'];
+            $tableRows['Engine power'][] = $vehicle['engine_power'];
+            $tableRows['Year'][] = $vehicle['year'];
+            $tableRows['width'][] = $vehicle['width'];
+            $tableRows['height'][] = $vehicle['height'];
+            $tableRows['length'][] = $vehicle['length'];
+            $tableRows['weight'][] = $vehicle['weight'];
+            $tableRows['max speed'][] = $vehicle['max_speed'];
+            $tableRows['acceleration'][] = $vehicle['acceleration'];
+            $tableRows['available colors'][] = $availableColors;    
+        }
+
+        $view->renderComparisonTable($tableRows);
+    }
+
     function getVehicleById($id){
 
         $model = new VehiculesModel();
@@ -276,10 +338,9 @@ function addFeature($data){
 
         return $res;
     }
-function getTopPopularReviewsByCarId($id , $nbr){ 
+function getTopPopularReviewsByCarId($id ){ 
     $model = new VehiculesModel();
-    $res = $model->getTopPopularReviewsByCarId($id , $nbr);
-    
+    $res = $model->getTopPopularReviewsByCarId($id );
     return $res; } 
 
 

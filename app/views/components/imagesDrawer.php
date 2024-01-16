@@ -15,9 +15,9 @@ class imagesDrawer
         for ($i = 0; $i < sizeof($imagesListWithIds); $i++) {
        
 
-            echo '<div class ="border" ">';
+            echo '<div class ="border  row stretch">';
             echo '<img class="brandImage" src="'.$imagesListWithIds[$i]["imagePath"]
-            .'" width="' . $size . '" alt=""  id=" '.$imagesListWithIds[$i]["id"] .'"> ';
+            .'" width="' . $size . '" alt=""  id="'.$imagesListWithIds[$i]["id"] .'"> ';
             // echo '<img'.'brandId="'.$imagesListWithIds[$i].id .'" src="' .$imagesListWithIds[$i] .'" width="'.$size.'" alt=""> ' ;
             echo "</div>";
         }

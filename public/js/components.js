@@ -1,15 +1,14 @@
 $(document).ready(function () {
 
-  alert("here");
   //! BrandsIds :
   let brandsIds = 1;
 
   //! here the defitino of all the functions
   function attachAddFormOnImageClick() {
+
+   
     $(".addFormBox").click(function () {
       let compareButton = $("#compareButton");
-      compareButton.prop("disabled", true);
-      // alert("should be disabled now !");
       var clickedElement = $(this); // Save the clicked element
       $.ajax({
         url: "app/api/api.php",
@@ -37,7 +36,7 @@ $(document).ready(function () {
   }
 
   function aBrandIsSelected() {
-    $("select.SelectBrand").each(function () {
+    $("select").each(function () {
       const arr = {
         BrandSelect: "",
         ModelSelect: "",
@@ -51,6 +50,7 @@ $(document).ready(function () {
       const selectedValue = selectClicked.val();
 
       selectClicked.change(() => {
+
         let newInput = {};
         newInput[selectType] = selectedValue;
 
@@ -123,19 +123,17 @@ $(document).ready(function () {
   }
 
   function compareButton() {
-    // button.prop('disabled', true);
     let button = $("#compareButton");
     $("#compareButton").click(function () {
       // it is clicked only if enabled
 
-      let listOfModelsIds = ["1", "2", "3", "4"];
+      let listOfModelsIds = [];
       const allSelect = $(".SelectModel");
       allSelect.each(function () {
         const selectedValue = $(this).val();
         listOfModelsIds.push(selectedValue);
       });
 
-      console.log("listofModelsIds", listOfModelsIds);
 
       $.ajax({
         url: "app/api/api.php",
@@ -150,6 +148,10 @@ $(document).ready(function () {
       });
     });
   } // fin du compareButton func
+
+
+
+
 
   function checkIfComparisonIsValid() {
     let button = $("#compareButton");
@@ -175,9 +177,47 @@ $(document).ready(function () {
       console.log("listOfModelsIds", listOfModelsIds);
       button.prop("disabled", false);
     } else {
-      // button.prop('disabled', true);
+      button.prop('disabled', true);
     }
   } //  end of 
+
+
+  $(".comparisonButton").click(function (e) {  
+    e.preventDefault();
+    let id = $(this).attr("id");
+    let currentUrl = window.location.href;
+    var lastSlashIndex = currentUrl.lastIndexOf('/');
+    // var secondToLastSlashIndex = currentUrl.substring(0, lastSlashIndex).lastIndexOf('/');
+    // window.location.href = 'http://localhost/VehiculesComparateur%20(ProjetWeb)/vehiculs/'+carId;
+
+    var newUrl = 'http://localhost/VehiculesComparateur%20(ProjetWeb)/comparator/'+id;
+    location.href = newUrl
+  });
+
+
+
+  $(".viewCarDetails").click(function (e) { 
+    e.preventDefault();
+    let carId = $(this).attr("id");
+    location.href = location.href + "/vehiculs/" + carId;
+    var currentUrl = window.location.href;
+    var lastSlashIndex = currentUrl.lastIndexOf('/');
+    
+    // Find the index of the second-to-last slash
+    var secondToLastSlashIndex = currentUrl.substring(0, lastSlashIndex).lastIndexOf('/');
+    
+    // Remove the last two slashes and concatenate the "vehicules/" and carId
+    var newUrl = currentUrl.substring(0, secondToLastSlashIndex + 1) + "vehiculs/" + carId;
+    window.location.href = 'http://localhost/VehiculesComparateur%20(ProjetWeb)/vehiculs/'+carId;
+    
+    // Update the window location with the new URL
+    
+
+
+  });
+
+
+    
 
   function reviewButton() {
     let button = $("#reviewButton");
@@ -186,9 +226,9 @@ $(document).ready(function () {
 
   function handleReviewsPageOfSelectedBrand() {
     let selectedBrandsToReview = $(" .brandsToReview  .brandImage");
-    selectedBrandsToReview.each(
-      function () {
-        $(this).click(function () {
+    selectedBrandsToReview.each( function () {
+      $(this).click(function (e) {
+        e.preventDefault();
           let brandId = $(this).attr("id");
           $.ajax({
             url: "app/api/api.php",
@@ -349,13 +389,20 @@ if (email !="" && password != ""){
   //!************************
 function checkLogged() {
   if (!document.cookie.includes('logedIn_user')) {
-
-      return false;
+    
+    return false;
     
   } else {
+    var userId = getCookie('logedIn_user');
+    console.log('userId', userId);
 
     return true;
 } }
+
+function getUserId(){
+  var userId = getCookie('logedIn_user');
+  return userId;
+}
 
 
 $('.rating i').click(function () {
@@ -371,6 +418,57 @@ $('.rating i').click(function () {
   }
 });
 
+//!************************
+
+function reviewBrand(){
+  let reviewButton = $(".reviewBrandButton");
+   reviewButton.click(function(e){
+     if (!checkLogged()) {
+       alert("please log in to review a car");
+         let container = $('<div class="topNotificationError"> please log in to review a car : </div>');
+         container.insertAfter(reviewButton.parent().parent());
+         container.fadeOut(1900);
+       
+     } else {
+
+     e.preventDefault();
+     let brandId = reviewButton.attr('id'); 
+     reviewButton.replaceWith('<form id="reviewForm" action="app/api/api.php" method="POST"> <label for="review">Review:</label> <input type="text" id="review" name="review" rows="4" cols="50" required></input> <label for="rating">Rating (1-5):</label> <input type="number" id="rating" name="rating" min="1" max="5" required> <input type="hidden" name="carId" value="'+brandId+'"> <input type="hidden" name="action" value="reviewCar"> <button id="submitReviewButton" value="Submit"> sumbit </form>');
+
+     let submitReviewButton = $("#submitReviewButton");
+     submitReviewButton.click(function(e){
+       e.preventDefault();
+       let review = $("#review").val();
+       let rating = $("#rating").val();
+
+       if (review != "" && rating != "" && brandId != ""){
+         $.ajax({
+           url: "/VehiculesComparateur%20(ProjetWeb)/app/api/api.php",
+           type: "POST",
+           data: { action: "reviewBrand", payload : {review : review ,  rating : rating , brandId : brandId} },
+           success: function (res) {
+             console.log("res", res);
+             $('#reviewForm').replaceWith('<div> review added successfully </div>');
+             alert("done");
+             
+           },
+     
+         });
+       }
+       else {
+         alert('please fill all the fields');
+       }
+     })
+
+
+   }
+
+
+   })
+
+
+
+} //end of method
 //!************************
 
   function reviewCar(){
@@ -396,12 +494,12 @@ $('.rating i').click(function () {
 
           if (review != "" && rating != "" && carId != ""){
             $.ajax({
-              url: "app/api/api.php",
+              url: "/VehiculesComparateur%20(ProjetWeb)/app/api/api.php",
               type: "POST",
               data: { action: "reviewCar", payload : {review : review ,  rating : rating , carId : carId} },
               success: function (res) {
-                console.log("res", res);
-                alert('review added successfully');
+                $('#reviewForm').replaceWith('<div> review added successfully </div>');
+                alert("done");
               },
         
             });
@@ -414,40 +512,9 @@ $('.rating i').click(function () {
 
       }
 
-        
-
-
-   
-        
-
-  
-
-
 
       })
-        
-    
-        
 
-
-
-
-
-        // $.ajax({
-        //   url: "app/api/api.php",
-          // type: "POST",
-          // data: { action: "carSelectedForReviews" , payload : carId },
-          // success: function (reviews) {
-          //   let parent = selectedCarsToReview.parent().parent();
-          //   parent.nextAll().empty();
-  
-          //   // create a container and insert it after the parent of selctedBrandsToReview
-          //   let container = $('<div class="reviewsContainer"> please select a car to review : </div>');
-          //   container.append(reviews);
-  
-          //   container.insertAfter(selectedCarsToReview.parent().parent());
-  
-          // }
 
 
   } //end of method
@@ -481,16 +548,259 @@ function initializeDataTable(){
     })
   }
   
-
-
+  
+  
   $(".newsDetails").click(function (e) {
     e.preventDefault();
     let newsId = $(this).attr("id");
     window.location.href = window.location.href + "/details/" + newsId; });
+    
+
+    //***************************** */
+    function SelectAbrand() {
+
+    let  images = $(".brandsSection img.brandImage");
+    images.each(function () {
+      $(this).click(function (e) {
+        e.preventDefault();
+        let brandId = $(this).attr("id") ;
+        // console.log('$(this)', $(this));
+
+        // change the url to the brand page
+        window.location.href = window.location.href + "/" + brandId;
+        
+
+
+      //   $.ajax({
+      //     url: "app/api/api.php",
+      //     type: "POST",
+      //     data: { action: "getBrandPage", payload : brandId },
+      //     success: function (res) {
+      //   console.log('res', res)
+      //   $("body").html(res);
+
+            
+
+         
+      //     }
+      // });
+    }) 
+    });
+  }
+  //***************************** */
+
+  // $(".reviewIcon").click(function (e) { 
+  //   e.preventDefault();
+  //   let reviewButton = $(this);
+  //   // if it is toggeled , remove from database , and remove toggle , 
+  //   // send the action and if it is empty make it toggled , and its frere make it untoggled ,
+  //   // which means  remove from database , and remove toggle ,
+     
+  //   if (!checkLogged()) {
+  //     alert("please log in to review a car");
+  //     let container = $('<div class="topNotificationError"> please log in to review a car : </div>');
+  //     container.insertAfter(reviewButton.parent().parent());
+  //     container.fadeOut(1900);
+  //   }
+  //   else { // get the reviewId
+  //     alert("you are logged in");
+  //     let userId = getUserId();
+  //     let reviewId = $(this).parent().attr("id");
+  //     let otherReviewButton = $(this).siblings(".reviewIcon");
+  //     let action = $(this).attr("action");
+  //     console.log('action', action);
+
+  //     if( otherReviewButton.hasClass("fas") ) {
+  //       otherReviewButton.removeClass("fas").addClass("far");
+  //       $.ajax({
+  //         url: "/VehiculesComparateur%20(ProjetWeb)/app/api/api.php",
+  //         type: "POST",
+  //         data: { action: 'removeReviewReactionBrand', reviewId: reviewId , userId : userId},
+  //         success: function (res) {
+  //          console.log("we removed the review reaction first")
+  //         },
+  //       });
+  //     }
+
+  //     if ($(this).hasClass("fas")) {
+  //       $(this).removeClass("fas").addClass("far");
+  //           $.ajax({
+  //             url: "/VehiculesComparateur%20(ProjetWeb)/app/api/api.php",
+  //             type: "POST",
+  //             data: { action: 'removeReviewReactionBrand', reviewId: reviewId , userId : userId},
+  //             success: function (res) {
+  //             },
+  //           });
+            
+            
+  //         } else {
+  //           $(this).removeClass("far").addClass("fas");
+  //           $.ajax({
+  //             url: "/VehiculesComparateur%20(ProjetWeb)/app/api/api.php",
+  //             type: "POST",
+  //             data: { action: action, reviewId: reviewId , userId : userId},
+  //             success: function (res) {
+  //               console.log("");
+                
+  
+                  
+  //         },
+  //       });
+  //     }
+
+
+      
+  //   }
+  // });
+
+  $(".reviewIcon").click(function (e) { 
+    let page = $(this).parent().attr("action");
+    let removeAction = "removeReactionOfReview"+page;
+    console.log('removeAction', removeAction);
+    e.preventDefault();
+    let reviewButton = $(this);
+
+    if (!checkLogged()) {
+        alert("Please log in to review a car");
+        let container = $('<div class="topNotificationError">Please log in to review a car:</div>');
+        container.insertAfter(reviewButton.parent().parent());
+        container.fadeOut(1900);
+    } else { 
+        alert("You are logged in");
+        let userId = getUserId();
+        let reviewId = $(this).parent().attr("id");
+        let otherReviewButton = $(this).siblings(".reviewIcon");
+        let action = $(this).attr("action")+page;
+        console.log('action', action);
+
+        if (otherReviewButton.hasClass("fas")) {
+            otherReviewButton.removeClass("fas").addClass("far");
+            $.ajax({
+                url: "/VehiculesComparateur%20(ProjetWeb)/app/api/api.php",
+                type: "POST",
+                data: { action: removeAction, reviewId: reviewId , userId: userId},
+                success: function (res) {
+                    console.log("First AJAX request completed successfully");
+                    
+                    // Now, make the second AJAX request
+                    if (reviewButton.hasClass("fas")) {
+                        reviewButton.removeClass("fas").addClass("far");
+                    } else {
+                        reviewButton.removeClass("far").addClass("fas");
+                    }
+
+                    // Second AJAX request with async:false to make it synchronous
+                    $.ajax({
+                        url: "/VehiculesComparateur%20(ProjetWeb)/app/api/api.php",
+                        type: "POST",
+                        data: { action: action, reviewId: reviewId, userId: userId},
+                        async: false, // Make the second request synchronous
+                        success: function (res) {
+                            console.log("Second AJAX request completed successfully");
+                        },
+                    });
+                },
+            });
+        } else {
+            // If the otherReviewButton doesn't have "fas", proceed with the second AJAX request immediately
+            if (reviewButton.hasClass("fas")) {
+                reviewButton.removeClass("fas").addClass("far");
+                $.ajax({
+                  url: "/VehiculesComparateur%20(ProjetWeb)/app/api/api.php",
+                  type: "POST",
+                  data: { action: removeAction, reviewId: reviewId , userId: userId},
+                  success: function (res) {
+                      console.log("First AJAX request completed successfully");
+                  } }); 
+
+            } else {
+                reviewButton.removeClass("far").addClass("fas");
+                
+                $.ajax({
+                  url: "/VehiculesComparateur%20(ProjetWeb)/app/api/api.php",
+                  type: "POST",
+                  data: { action: action, reviewId: reviewId, userId: userId},
+                  success: function (res) {
+                    console.log("Second AJAX request completed successfully");
+                  },
+                });
+              }
+
+        }
+    }
+});
+
+
+  //***************************** */
+
+$(".showAllBrandReviewButton").click(function (e) {  
+  e.preventDefault();
+  // let brandId = $(this).attr("id");
+  $(".reviewCard").each(function () {
+    //remove the calss hidden 
+    $(this).removeClass("hidden");
+    $(".showAllBrandReviewButton").hide();
+  });
+
+})
+$(".showAllCarReviews").click(function (e) {  
+  e.preventDefault();
+  // let brandId = $(this).attr("id");
+  $(".reviewCard").each(function () {
+    //remove the calss hidden 
+    $(this).removeClass("hidden");
+    $(".showAllCarReviews").hide();
+  });
+
+})
 
 
 
+//***************************** */
+
+  $(".miniImages img").each(function () {
+
+    $(this).click(function (e) {
+      e.preventDefault();
+      let MainImage = $(".mainCarImage");
+      alert("clicked"); 
+      // replace the main with this one , replace the srouces of this and the main images
+      let src = $(this).attr("src");
+      let mainSrc = MainImage.attr("src");
+      MainImage.attr("src", src);
+      $(this).attr("src", mainSrc);
+    });
+  });
+
+
+
+
+
+  //***************************** */
+  function getCookie(name) {
+    // Split the cookie string into individual cookies
+    var cookies = document.cookie.split('; ');
+
+    // Loop through the cookies to find the one with the specified name
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var cookieParts = cookie.split('=');
+        var cookieName = cookieParts[0];
+        var cookieValue = cookieParts[1];
+
+        // Return the value if the cookie name matches
+        if (cookieName === name) {
+            return cookieValue;
+        }
+    }
+
+    // Return null if the cookie is not found
+    return null;
+}
+  //***************************** */
+    
   //! here the calling of all the functions
+  SelectAbrand();
   attachBrandSelection();
   checkIfComparisonIsValid();
   attachAddFormOnImageClick();
@@ -500,6 +810,7 @@ function initializeDataTable(){
   reviewButton();
   signUp();
   logIn();
+  reviewBrand();
   addToFavorites();
   reviewCar();  
   // handleBrandToReviewClick();
@@ -533,7 +844,6 @@ function initializeDataTable(){
   function handleAddBrandButton() {
     let addButton = $(".addBrandButton");
     addButton.click(function () {
-      alert("hh");
       // collect all the names and values of the inputs 
       $("input").each(function () {
         let inputName = $(this).attr("name");

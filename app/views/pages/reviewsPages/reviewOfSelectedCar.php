@@ -39,32 +39,66 @@ class ReviewOfSelectedCarPage{
         echo "</div>";  
         echo "<div class='row'>";
         echo "<h1>".$car['name']."</h1>"; 
-        echo "<button id=".$car['id']."'>  go to car details </button>";
+        echo "<button id=".$car['id']." class='viewCarDetails'>  go to car details </button>";
         echo "</div>";
         
     }
 
     function showReviewPaginationSection($page){
+        $itemsPerPage = 5;
 
        //??  i just render the first five , 
        //? id pass the page to it and that's it i think
 
         $ctrl = new VehiclesController();
         $reviews = $ctrl->getReviewsOfVehicle($this->carId );
+        $this->showResult($reviews);
         // echo $this->carId ; 
         $reviewsToRender =[]; 
         for ($i=0; $i < count($reviews); $i++) { 
-            $temp = $reviews[0] ; 
-            $temp['first_name'] = "first name ".$i ;
             $reviewsToRender[$i] = new ReviewCard();
-            // $reviewsToRender[$i] = new ReviewCard($reviews[0]);
+
+            $totalPages = ceil(count($reviews) / $itemsPerPage);
+    
+            $output = '<ul class="pagination">';
+                // echo '<li>' . $this->totalItemsToRender[$i] . '</li>';
+                // if item is out of this page range make it hidden
+                if($i >=4){
+                    echo '<div class=" pageItem pageItem'.$i.'" style="display:none;" >'; 
+                    $reviewsToRender[$i]->render( $reviews[$i],null,null, $this->carId , "car");
+                    echo '</div>';
+                    continue;
+                }
+                echo '<div class="row border g3 pageItem"  >'; 
+                $reviewsToRender[$i]->render( $reviews[$i],null,null, $this->carId , "car");
+                echo '</div>';
+                
+            }
+            
+            $output .=
+            '<div class="row border g3" ';
+            
+            // if ($this->currentPage > 0) {
+            //     echo "----------------------";
+            //     $output .= '<li><a id="previousPage" ' . '">Previous</a></li>';
+            // }
+            // Page links
+            // for ($i = 1; $i <= $totalPages; $i++) {
+            //     $output .= '<li  ' . ($i == $this->currentPage ? 'class="active paginationLink"' : 'class="paginationLink"') . '><a ' . '">' . $i . '</a></li>';
+            // }
+    
+            $output .= '</div>';
+        
+            $output .= '</ul>';
+            echo $output;
+           
         }
-        $pagination = new Pagination( $reviews , 5, $page);
-        $pagination->render();
-         
+
+
+
     }
 
+
+
         
-    
-    
-}
+

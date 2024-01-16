@@ -4,6 +4,21 @@ require_once  __DIR__ . '/../models/mainModel.php';
 class VehiculesModel extends mainModel
 {
 
+function getUserReactionsToReviewsByCarId( $userId){
+    
+    $request = "SELECT * FROM vehiclereviewreaction WHERE user_id = ? ";
+    $res = $this->request($request , [ $userId]);
+    return $res;
+
+}
+
+
+
+    function hasReviewedThisCar($userId , $carId){
+        $request = "SELECT * FROM vehiclereview WHERE user_id = ? AND vehicle_id = ?";
+        $res = $this->request($request , [$userId , $carId]);
+        return !empty($res);
+    }
 
     function editCar($id , $data){
         $request = "UPDATE `vehicle` SET `brand_id`='$data[brand]',`version_id`='$data[version]',`name`='$data[origin]',`type`='$data[type]',`year`='$data[year]',`number_of_seats`='$data[number_of_seats]',`capacity`='$data[capacity]',`consumption`='$data[consumption]',`engine_power`='$data[engine_power]',`acceleration`='$data[acceleration]',`max_speed`='$data[max_speed]',`warranty`='$data[warranty]',`price`='$data[price]',`height`='$data[height]',`length`='$data[length]',`weight`='$data[weight]',`width`='$data[width]',`cargo_space`='$data[cargo_space]' WHERE id = $id";
@@ -222,17 +237,18 @@ function getColorsByVehicleId($id){
 }
 
 function getPopularCarsByBrandId($id , $nbrOfCarsToShow){
-   
-    $request = "SELECT
-    vehicle.id as id , 
-    COUNT(favorite.id) AS favorite_count
-FROM
-    vehicle
-LEFT JOIN
-    favorite ON vehicle.id = favorite.vehicle_id
-GROUP BY
-    vehicle.id
-ORDER BY favorite_count DESC LIMIT $nbrOfCarsToShow;";
+    // select the cars that have high vehiclerating and are of the brand with the id $id
+
+    $request = "SELECT vehicle.id , AVG(rating) as rating FROM vehicle join vehiclereview on (vehicle.id = vehiclereview.vehicle_id) WHERE brand_id = $id GROUP BY vehicle.id ORDER BY rating DESC LIMIT $nbrOfCarsToShow";
+
+
+
+//     $request = "SELECT vehicle.id as id ,  COUNT(favorite.id) AS favorite_count FROM vehicle
+// LEFT JOIN
+//     favorite ON vehicle.id = favorite.vehicle_id
+// GROUP BY
+//     vehicle.id
+// ORDER BY favorite_count DESC LIMIT $nbrOfCarsToShow;";
     return $this->request( $request);
 } // end of func
 
@@ -265,9 +281,8 @@ ORDER BY favorite_count DESC LIMIT $nbrOfCarsToShow;";
   }
 
 
-  function getTopPopularReviewsByCarId($id , $nbrOfReviews){
-    // $request = "SELECT reviewText , first_name , last_name  FROM `brandreview` join user on (user.id = brandreview.userId) WHERE `brand_id` = $id LIMIT $nbrOfReviews";
-    $query = "SELECT text as reviewText , first_name , last_name  FROM vehiclereview join user on (user.id =  vehiclereview.user_id) WHERE vehicle_id = ? ORDER BY rating DESC LIMIT $nbrOfReviews";
+  function getTopPopularReviewsByCarId($id ){
+    $query = "SELECT text as reviewText , first_name , last_name , vehiclereview.id as id  FROM vehiclereview join user on (user.id =  vehiclereview.user_id) WHERE vehicle_id = ? ORDER BY rating DESC ";
     return $this->request($query , [$id]);
   }
 

@@ -2,6 +2,37 @@
 require_once  __DIR__ . '/../models/mainModel.php';
 
 class UsersModel extends mainModel {
+    function likeReviewCar($reviewId , $userId){
+        $query = "INSERT INTO `vehiclereviewreaction`(`vehiclereview_id` , `user_id` , `reaction`) VALUES (? , ? , ?)";
+        $this->request($query , [$reviewId , $userId , "liked"]);
+    }
+
+
+
+
+function dislikeReviewCar($reviewId , $userId){
+    $query = "INSERT INTO `vehiclereviewreaction`(`vehiclereview_id` , `user_id` , `reaction`) VALUES (? , ? , ?)";
+    $this->request($query , [$reviewId , $userId , "disliked"]);
+}
+
+
+    function removeReviewReactionCar($reviewId , $userId){
+        $query = "DELETE FROM `vehiclereviewreaction` WHERE `vehiclereview_id` = ? AND `user_id` = ?";
+        $this->request($query , [$reviewId , $userId]);
+    }
+
+  function addBrandReview($review , $brandId , $rating , $userId){
+    $query = "INSERT INTO `brandreview`(`reviewText` , `brand_id` , `rating` , `userId`) VALUES (? , ? , ? , ?)";
+    $this->request($query , [$review , $brandId , $rating , $userId]);
+    }
+
+
+
+
+            function removeReviewReactionBrand($reviewId , $userId){
+                $query = "DELETE FROM `brandreviewreaction` WHERE `brandreview_id` = ? AND `user_id` = ?";
+                $this->request($query , [$reviewId , $userId]);
+            }
         function createUser($firstName  , $lastName , $birthDate , $gender , $password , $email ){
             if ($gender == 0){
                 $genderName = "Female";
@@ -32,5 +63,14 @@ class UsersModel extends mainModel {
         function addCarReview($review , $carId , $rating , $userId){
             $query = "INSERT INTO `vehiclereview`(`text` , `vehicle_id` , `rating` , `user_id`) VALUES (? , ? , ? , ?)";
             $this->request($query , [$review , $carId , $rating , $userId]);
+        }
+
+        function likeReview($reviewId , $userId){
+            $query = "INSERT INTO `brandreviewreaction`(`brandreview_id` , `user_id` , `reaction`) VALUES (? , ? , ?)";
+            $this->request($query , [$reviewId , $userId , "liked"]);
+        }
+        function dislikeReview($reviewId , $userId){
+            $query = "INSERT INTO `brandreviewreaction`(`brandreview_id` , `user_id` , `reaction`) VALUES (? , ? , ?)";
+            $this->request($query , [$reviewId , $userId , "disliked"]);
         }
 }

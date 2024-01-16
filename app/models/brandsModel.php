@@ -3,6 +3,23 @@ require_once  __DIR__ . '/../models/mainModel.php';
 
 class BrandsModel extends MainModel {
 
+    function hasReviewedThisBrand($userId , $brandId){
+        $request = "SELECT * FROM `brandreview` WHERE `userId` = $userId AND `brand_id` = $brandId";
+        $res = $this->request($request);
+        if(count($res) > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function getUserReactionsToReviewsByBrandId($userId , $brandId = null){
+        $request = "SELECT *  FROM `brandreviewreaction` WHERE user_id = $userId ";
+        return $this->request($request);
+    }
+
+
+
 function updateBrandById($id , $data){
     $request = "UPDATE `brand` SET `name`='$data[name]',`origin`='$data[origin]',`yearOfCreation`='$data[yearOfCreation]',`founder`='$data[founder]',`ceo`='$data[ceo]',`headQuarters`='$data[headQuarters]',`worth`='$data[worth]',`description`='$data[description]',`slogan`='$data[slogan]' WHERE id = $id";
     $this->request($request);
@@ -77,7 +94,8 @@ public function addAwards($brandId , $awards){
     }
 function getReviewsByBrandId($id , $nbrOfReviews){
 
-    $request = "SELECT reviewText , first_name , last_name  FROM `brandreview` join user on (user.id = brandreview.userId) WHERE `brand_id` = $id LIMIT $nbrOfReviews";
+    // $request = "SELECT reviewText , brandreview.id as id  , first_name , last_name  FROM `brandreview` join user on (user.id = brandreview.userId) WHERE `brand_id` = $id LIMIT $nbrOfReviews";
+    $request = "SELECT reviewText , brandreview.id as id  , first_name , last_name  FROM `brandreview` join user on (user.id = brandreview.userId) WHERE `brand_id` = $id ";
     return $this->request( $request);    
  }
 
@@ -90,7 +108,9 @@ function getReviewsByBrandId($id , $nbrOfReviews){
         }//end of method
 
         function getBrandRatingById($id){
-            $query = "SELECT AVG(rating) as rating FROM brandRating WHERE brand_id = $id"; 
+ 
+            $query = "SELECT AVG(rating) as rating FROM brandreview WHERE brand_id = $id "; 
+
             return $this->request($query);
         }
 

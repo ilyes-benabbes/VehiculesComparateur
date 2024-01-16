@@ -3,6 +3,7 @@
 require_once __DIR__ . "/../controllers/vehiclesController.php";
 require_once __DIR__ . "/../controllers/brandsController.php";
 require_once __DIR__ . "/../controllers/usersController.php";
+require_once __DIR__. "/../views/pages/brandsPage/brandsPage.php";
 
 
 
@@ -15,6 +16,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ctrl = new VehiclesController();
             $ctrl->addFormComparisonForm();  
             break; 
+
+            case "likebrand": 
+            $reviewId = $_POST['reviewId'];
+            $userId = $_POST['userId'];
+            $ctrl = new UsersController();
+            $ctrl->likeReview($reviewId , $userId);
+
+            break;
+            
+            case "dislikebrand":
+                $reviewId = $_POST['reviewId']; 
+                $userId = $_POST['userId'];
+                $ctrl = new UsersController();
+                $ctrl->dislikeReview($reviewId , $userId);
+                break;
+
+                case "likecar": 
+                $reviewId = $_POST['reviewId'];
+                $userId = $_POST['userId'];
+                $ctrl = new UsersController();
+                $ctrl->likeReviewCar($reviewId , $userId);
+    
+                break;
+            case "dislikecar":
+            $reviewId = $_POST['reviewId']; 
+            echo $reviewId;
+            echo 'hreer';
+            $userId = $_POST['userId'];
+            $ctrl = new UsersController();
+            $ctrl->dislikeReviewCar($reviewId , $userId);
+            break;
+
+            case "removeReactionOfReviewbrand": 
+            $reviewId = $_POST['reviewId'];
+            $userId = $_POST['userId'];
+            $ctrl = new UsersController();
+            $ctrl->removeReviewReactionBrand($reviewId , $userId);
+            break;
+            case "removeReactionOfReviewcar": 
+            $reviewId = $_POST['reviewId'];
+            $userId = $_POST['userId'];
+            $ctrl = new UsersController();
+            $ctrl->removeReviewReactionCar($reviewId , $userId);
+            break;
+
+
+
+            
         case 'addVersion':
             
             $ctrl = new VehiclesController();
@@ -74,6 +123,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $response = $ctrl->addCarReview($review , $carId , $rating);
                     echo json_encode($response);
                     break;
+                case 'reviewBrand':
+                    
+                    $review = $_POST['payload']["review"];
+                    $brandId = $_POST['payload']["brandId"];
+                    $rating = $_POST['payload']["rating"];
+                    $ctrl = new UsersController();
+                    $response = $ctrl->addBrandReview($review , $brandId , $rating);
+                    echo json_encode($response);
+                    break;
+
+
+
+                    
+                    // case 'getBrandPage':
+                    //     $id = $_POST['payload'];
+                    //     $brandsPage = new BrandsPage();
+                    //     $brandsPage->showBrandDataById($id);
+                    //     break ;
             
             
             

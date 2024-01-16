@@ -24,7 +24,13 @@ class Layout
     {
         $this->configure();
         $this->showHeader();
+        $this->showMenu();  
         $page->show();
         $this->showFooter();
+    }
+    function showMenu()
+    {
+        $menu = new Menu();
+        $menu->render();
     }
 }
